@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+  <p>Welcome to <%= title %>
+  </p>
+  <p><a href="/page2">page2</a></p>
+  <div id="fragment">fragment</div>
+  <p><a href="/page2">page2</a></p>
+</body>
+<script>
+  function init() {
+    console.log(detectBack());
+    loadContent();
+  }
+  // related: https://stackoverflow.com/a/28773201/510222
+  function detectBack() {
+    if (window.history && window.history.pushState) {
+      window.history.pushState('forward', null, './#forward');
+
+      window.onpageshow = function (event) {
+        if (event.persisted) {
+          console.log("From back / forward cache.", event);
+          return true;
+        } else {
+          return false;
+        }
+      };
+    }
+    return false;
+  };
+  function loadContent() {
+    fetch('/api/list').then(function (response) {
+      return response.text();
+    }).then(function (html) {
+      document.getElementById('fragment').innerHTML = html;
+    });
+  }
+  window.onload = init;
+</script>
+
+</html>
