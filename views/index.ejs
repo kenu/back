@@ -46,6 +46,12 @@
       document.getElementById('fragment').innerHTML = html;
     });
   }
+  (function () {
+    window.addEventListener('unload', function (event) {
+      debugger;
+      console.log('unload', event);
+    });
+  })();
   window.onload = init;
 </script>
 
